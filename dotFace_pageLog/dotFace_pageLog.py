@@ -1,4 +1,4 @@
-import requests
+ï»¿import requests
 import privateKey as pkey
 import json
 import time
@@ -15,7 +15,7 @@ def get_refresh_token(live_token):
         })
     if token.ok == True:
         if token.text.find("access_token=") >= 0:
-            # 13±îÁö
+            # 13ê¹Œì§€
             if token.text.find("&expires") >= 0:
                 last = token.text.find("&expires")
                 return token.text[13:last]
@@ -50,7 +50,7 @@ dotface_id = "214142335609595"
 # main
 while True:
     access_token = get_refresh_token(access_token)
-    # Todo : 100°³ ÀÌ»ó ´Ã¾î³¯ ½Ã¿¡ ¹Ş¾Æ¿À±â À§ÇÑ ÀÛ¾÷ ÇÊ¿ä
+    # Todo : 100ê°œ ì´ìƒ ëŠ˜ì–´ë‚  ì‹œì— ë°›ì•„ì˜¤ê¸° ìœ„í•œ ì‘ì—… í•„ìš”
     posts_json = get_fb(dotface_id, "posts", {"limit": 100}).json()["data"]
 
     data = []
@@ -59,11 +59,11 @@ while True:
     for post_json in posts_json:
         post_id = post_json["id"][16:]
         rq = get_fb(post_id, "video_insights", {"metric": unique_key + "," + story_key})
-        # ¸®ÅÏ °ªÀÌ ¾ø´Â °æ¿ì
+        # ë¦¬í„´ ê°’ì´ ì—†ëŠ” ê²½ìš°
         if rq.ok is not True:
             continue
         json = rq.json()
-        # ¾îÂ÷ÇÇ 2°³ ¹Û¿¡ ¾øÀ¸´Ï
+        # ì–´ì°¨í”¼ 2ê°œ ë°–ì— ì—†ìœ¼ë‹ˆ
         if json["data"][0]["name"] == unique_key:
             viral_json = json["data"][0]
             stories_json = json["data"][1]
@@ -72,7 +72,7 @@ while True:
             stories_json = json["data"][0]
             pass
         # append story
-        # °ªÀÌ ¾øÀ» °æ¿ì, key·Î Á¸ÀçÇÏÁö ¾ÊÀ¸¹Ç·Î ÀÌ¸¦ ¿¹¿ÜÃ³¸®ÇÒ ÇÔ¼ö
+        # ê°’ì´ ì—†ì„ ê²½ìš°, keyë¡œ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë¯€ë¡œ ì´ë¥¼ ì˜ˆì™¸ì²˜ë¦¬í•  í•¨ìˆ˜
         def get_story_value(key, json):
             if list(json.keys()).count(key) > 0:
                 return json[key]
