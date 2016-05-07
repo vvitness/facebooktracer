@@ -62,20 +62,20 @@ while True:
         # 리턴 값이 없는 경우
         if rq.ok is not True:
             continue
-        json = rq.json()
+        rq_json = rq.json()
         # 어차피 2개 밖에 없으니
-        if json["data"][0]["name"] == unique_key:
-            viral_json = json["data"][0]
-            stories_json = json["data"][1]
+        if rq_json["data"][0]["name"] == unique_key:
+            viral_json = rq_json["data"][0]
+            stories_json = rq_json["data"][1]
         else:
-            viral_json = json["data"][1]
-            stories_json = json["data"][0]
+            viral_json = rq_json["data"][1]
+            stories_json = rq_json["data"][0]
             pass
         # append story
         # 값이 없을 경우, key로 존재하지 않으므로 이를 예외처리할 함수
-        def get_story_value(key, json):
-            if list(json.keys()).count(key) > 0:
-                return json[key]
+        def get_story_value(key, rq_json):
+            if list(rq_json.keys()).count(key) > 0:
+                return rq_json[key]
             else:
                 return 0
             pass
@@ -93,10 +93,10 @@ while True:
             ))
         pass
 
-    json_dump_str = json.dumps(data)
+    json_dump_str = json.dumps(data, ensure_ascii=False).encode('utf8')
     #json.dump(data, open('data/data.json', 'w+'))
 
-    post_table_log(json_dump_str)
+    post_table_log(json_dump_str.decode(encoding="utf-8"))
     # test    
-    time.sleep(10)
+    time.sleep(60 * 10)
     pass
