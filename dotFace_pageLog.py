@@ -64,13 +64,18 @@ while True:
             continue
         rq_json = rq.json()
         # 어차피 2개 밖에 없으니
-        if rq_json["data"][0]["name"] == unique_key:
-            viral_json = rq_json["data"][0]
-            stories_json = rq_json["data"][1]
-        else:
-            viral_json = rq_json["data"][1]
-            stories_json = rq_json["data"][0]
-            pass
+        try:
+            if rq_json["data"][0]["name"] == unique_key:
+                viral_json = rq_json["data"][0]
+                stories_json = rq_json["data"][1]
+            else:
+                viral_json = rq_json["data"][1]
+                stories_json = rq_json["data"][0]
+                pass
+            post_unique = viral_json["values"][0]["value"]
+        except:
+            post_unique = 0
+
         # append story
         # 값이 없을 경우, key로 존재하지 않으므로 이를 예외처리할 함수
         def get_story_value(key, rq_json):
@@ -79,12 +84,17 @@ while True:
             else:
                 return 0
             pass
-        story_value = stories_json["values"][0]["value"]
 
-        post_like = story_value.get("like")
-        post_share = story_value.get("share")
-        post_comment = story_value.get("comment")
-        post_unique = viral_json["values"][0]["value"]
+        try:
+            story_value = stories_json["values"][0]["value"]
+            post_like = story_value.get("like")
+            post_share = story_value.get("share")
+            post_comment = story_value.get("comment")
+        except:
+            post_like = 0
+            post_share = 0
+            post_comment = 0        
+        
         post_msg = post_json.get("message")
         post_created_time = post_json["created_time"]
 
@@ -98,5 +108,6 @@ while True:
 
     post_table_log(json_dump_str.decode(encoding="utf-8"))
     # test    
+    break
     time.sleep(60 * 10)
     pass
